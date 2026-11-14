@@ -11,16 +11,16 @@ def comy_endpoint():
     data = request.json
     player_message = data.get("message", "").lower()
     
-    # Prosta logika rozpoznawania poleceń dla Baritone
+    # Logika odpowiedzi i akcji Baritone
     response_action = ""
-    if "chodź" in player_message or "chodz" in player_message:
+    if "chodź" in player_message or "chodz" in player_message or "follow" in player_message:
         reply_text = "Okej, ruszam za Tobą!"
         response_action = "#follow"
-    elif "kop" in player_message:
+    elif "kop" in player_message or "mine" in player_message:
         reply_text = "Rozumiem, zaczynam kopanie."
         response_action = "#mine"
     else:
-        reply_text = f"Odebrałem wiadomość: '{player_message}'."
+        reply_text = f"Odebrałem wiadomość: '{player_message}'. Wszystko działa poprawnie!"
 
     return jsonify({
         "reply": reply_text,
