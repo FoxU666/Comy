@@ -9,16 +9,25 @@ def home():
 @app.route("/api/comy", methods=["POST"])
 def comy_endpoint():
     data = request.json
-    # Tutaj w przyszłości dodasz logikę AI dla swojego moda
-    player_action = data.get("action", "unknown")
+    player_message = data.get("message", "").lower()
     
-    response_data = {
-        "reply": f"Comy odebrało akcję: {player_action}. Wszystko działa poprawnie!"
-    }
-    return jsonify(response_data)
+    # Prosta logika rozpoznawania poleceń dla Baritone
+    response_action = ""
+    if "chodź" in player_message or "chodz" in player_message:
+        reply_text = "Okej, ruszam za Tobą!"
+        response_action = "#follow"
+    elif "kop" in player_message:
+        reply_text = "Rozumiem, zaczynam kopanie."
+        response_action = "#mine"
+    else:
+        reply_text = f"Odebrałem wiadomość: '{player_message}'."
+
+    return jsonify({
+        "reply": reply_text,
+        "action": response_action
+    })
 
 if __name__ == "__main__":
-    # Render automatycznie przypisuje port przez zmienną środowiskową PORT
     import os
     port = int(os.environ.get("PORT", 5000))
     app.run(host="0.0.0.0", port=port)
